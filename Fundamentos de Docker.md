@@ -63,7 +63,7 @@ RUN touch /usr/src/hola-miguel
 
 siempre empieza con un **FROM** que es la imagen raíz por así decirlo y los  comandos **RUN** y otros que especifiquemos estarán una capa por encima de este, gráficamente hablando.
 
-![1554740134331](F:\Cursos\Docker\src\1554740134331.png)
+![1554740134331](https://github.com/mcortegana/curso-docker/blob/master/src/1554740134331.png)
 
 
 
