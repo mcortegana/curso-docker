@@ -51,7 +51,7 @@ Las imágenes son plantillas de contenedores. Una imagen es inmutable; esto quie
 
 Una imagen se crea a partir de un *Dockerfile* mediante un ***build*** y a raíz de estas imágenes es que se crean los contenedores con el comando ***run***.
 
-![1554738862164](F:\Cursos\Docker\src\1554738862164.png)
+![1554738862164](https://github.com/mcortegana/curso-docker/blob/master/src/1554738862164.png)
 
 Un Dockerfile tiene la siguiente forma:
 
