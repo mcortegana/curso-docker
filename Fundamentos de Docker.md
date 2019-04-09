@@ -23,6 +23,8 @@
 
   Si corres un contenedor por primera vez, Docker lo descarga o busca  su imagen, pero si lo corres una segunda vez, ya no muestra la información y  corre lo que tiene que correr.
 
+![goals](https://github.com/mcortegana/curso-docker/blob/master/src/goals.png)
+
 
 
 ## Qué es un contenedor?
@@ -91,7 +93,73 @@ Para construir la imagen usamos el comando:
 
 + ***docker build -t "nombre:version"***
 
-[Mejores prácticas al escribir  ficheros Dockerfile]:https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+[best-practices]:https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
+En la [documentación][best-practices] se puede encontrar una guía de referencia con  las mejores practicas al  momento de escribir Dockerfiles.
+
+### Optimizar la cache de construcción de Docker
+
+Docker utiliza una memoria cache con la idea de agilizar la construcción de imágenes. Como se menciono antes las imágenes son construidas por capas; en un  archivo Dockerfile cada instrucción se traduce en una capa de la imagen.
+
+Docker puede reutilizar, siempre que se pueda, las capas de una construcción anterior. Evitando de esta forma volver a ejecutar instrucciones que ya han sido utilizadas previamente; para esto hay que tener en cuenta algunas cosas al momento de construir un *Dockerfile*.
+
++ Colocar las instrucciones del *Dockerfile* que **tienden a cambiar** en la parte final  del fichero. Dado que si están entre las primeras líneas, *Docker* reconocerá un cambio e invalidará todo el  cache de una construcción anterior que podíamos haber reutilizado.
+
++ Agrupar instrucciones en una misma capa o instrucción del fichero *Dockerfile*. Se muestra mejor en el  siguiente ejemplo:
+
+  ​	
+
+  ```dockerfile
+  FROM debian:9
+  RUN apt-get update
+  RUN apt-get install -y nginx
+  
+  # En lugar su lugar, es mejor combinar ambas instrucciones RUN en una sola.
+  
+  FROM debian:9
+  RUN apt-get update
+  	apt-get install -y nginx
+  ```
+
+[construccion]: https://medium.com/@serrodcal/buenas-pr%C3%A1cticas-construyendo-im%C3%A1genes-docker-8a4f14f7ad1d
+
+Estas y más recomendaciones al momento de construir imágenes docker y ficheros *Dockerfile* podemos encontrar en el  siguiente [blog][construccion].
+
+## Redes en Docker
+
+*Docker* proporciona los fundamentos y herramientas necesarias para la creación de redes y comunicación entre contenedores y contenedor-host. Permite crear *subredes* y unir contenedores a esta para que trabajen conjuntamente.
+
+Por defecto *Docker* tiene 3 redes disponibles:
+
++ **bridge**: red por defecto, actualmente en desuso.
++ **host:** Simula totalmente la red del host o computador que esta corriendo *Docker*, se recomienda no usar.
++ **none:** Aísla o deshabilita la red.
+
+Para crear una nueva red sobre la que podamos hacer que 2 o más contenedores colaboren se usa el  comando:
+
++ **docker network create --attachable \<nombre-de-red\>**
+
+El  *flag* **--attachable** indica que otros contenedores se pueden unir a esta red.
+
+Una vez creada esta red podemos hacer que 2 o más contenedores se unan a ella mediante el comando:
+
+**docker network connect \<nombre-red\> \<nombre-contenedor\>**
+
+Ejemplo:
+
+**docker network create --attachable dockernet** => Creamos la red *dockernet*.
+
+**docker run -d --name mongodb mongo** => Creamos un contenedor de mongo con el nombre *mongodb.*
+
+**docker network connect dockernet mongodb** => Une el contenedor mongodb a la red *dockernet*.
+
+**docker run -d --name app -p 3000:3000 --env MONGO_URL=mongodb://mongodb:27017/test dockerapp** => Especifica mediante una variable de entorno *MONGO_URL* la cadena de conexión hacia la base de datos mongo unidad a la red *dockernet*, esta variable de entorno se usará para realizar la conexión hacia la base de datos mongodb 
+
+## Docker Compose
+
+
+
+
 
 
 
@@ -114,3 +182,5 @@ Para construir la imagen usamos el comando:
 + ***docker volume prune*** = elimina los volúmenes que no estén en uso.
 + ***docker volume ls*** = lista los volúmenes existentes.
 + ***docker volume rm "nombre-de-volumen"*** = Elimina un volumen específico.
++ ***docker run -d  -p 8080:80 nginx*** = El flag **-p** vincula un puerto del contenedor a un puerto local en la forma *<puerto_local>:<puerto_contenedor>*.
++ 
