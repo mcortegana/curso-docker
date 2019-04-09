@@ -65,6 +65,34 @@ siempre empieza con un **FROM** que es la imagen raíz por así decirlo y los  c
 
 ![1554740134331](https://github.com/mcortegana/curso-docker/blob/master/src/1554740134331.png)
 
+## Dockerizando aplicaciones
+
+Para ***dockerizar*** una aplicación (*crear una imagen de ella*), se debe hacer uso de un archivo Dockerfile; este archivo *Dockerfile* puede tener la siguiente estructura:
+
+```dockerfile
+# Dockerfile de la imagen raiz
+FROM node:8
+# Ordena que se deben copiar todos los archivos del contexto actual del build
+# [<ubicación de los archivos a copiar>,<destino>]
+COPY [".","/usr/src"]
+# Especifica el  directorio donde se ubican los archivos de nuestra aplicación y navega hacia ella.
+WORKDIR /usr/src
+# Ejecuta el comando npm install
+RUN npm install
+# Indica el puerto de salida o puerto por el  cual  se expondrá el contenedor.
+EXPOSE 3000
+# Especifica un comando por defecto que se ejecutará al crear un contenedor
+# en este caso se ejecuta el comando "node index.js" que inicializa un servidor http de
+# nodejs con express.
+CMD ["node","index.js"]
+```
+
+Para construir la imagen usamos el comando:
+
++ ***docker build -t "nombre:version"***
+
+[Mejores prácticas al escribir  ficheros Dockerfile]:https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
 
 
 ##### Comandos Útiles
