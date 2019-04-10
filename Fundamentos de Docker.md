@@ -91,7 +91,7 @@ CMD ["node","index.js"]
 
 Para construir la imagen usamos el comando:
 
-+ ***docker build -t "nombre:version"***
++ ***docker build -t "nombre:version"*** .
 
 [best-practices]:https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 
@@ -153,15 +153,48 @@ Ejemplo:
 
 **docker network connect dockernet mongodb** => Une el contenedor mongodb a la red *dockernet*.
 
-**docker run -d --name app -p 3000:3000 --env MONGO_URL=mongodb://mongodb:27017/test dockerapp** => Especifica mediante una variable de entorno *MONGO_URL* la cadena de conexión hacia la base de datos mongo unidad a la red *dockernet*, esta variable de entorno se usará para realizar la conexión hacia la base de datos mongodb 
+**docker run -d --name app -p 3000:3000 --env MONGO_URL=mongodb://mongodb:27017/test dockerapp** => Especifica mediante una variable de entorno *MONGO_URL* la cadena de conexión hacia la base de datos mongo unidad a la red *dockernet*, esta variable de entorno se usará para realizar la conexión hacia la base de datos mongodb.
+
+Solo quedaría unir el contenedor app a la red dockernet y listo.
+
+**docker network connect dockernet app**
 
 ## Docker Compose
 
+***Docker Compose*** es una herramienta que permite simplificar el uso de Docker, generando scripts que facilitan el diseño y la construcción de servicios, permitiéndonos  describir de forma declarativa la arquitectura de nuestra aplicación utilizando *composefile* (docker-compose.yml).
 
+Un fichero *docker-compose.yml* tiene la siguiente estructura.
 
+```yaml
+version: "3"
 
+services:
+  app:
+    image: demoapp
+    environment:
+      MONGO_URL: "mongodb://db:27017/test"
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
 
+  db:
+    image: mongo
+```
 
+*Docker Compose* creará los contenedores y redes necesarios según estén declarados en el archivo *.yml*
+
+Para crear los servicios con *Docker Compose*, usar el comando:
+
+***docker-compose up -d***, el *flag* **-d** indica que no mostrará la salida de consola del contenedor.
+
+Para detener los servicios en ejecución:
+
+***docker-compose down,*** esto detendra los servicios ejecutados.
+
+Tambien podemos acceder a un contenedor con:
+
+***docker-compose exec \<nombre-servicio\> \<bash ó alguna ejecución\>*** 
 
 ##### Comandos Útiles
 
