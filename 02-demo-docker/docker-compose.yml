@@ -2,19 +2,19 @@ version: "3"
 
 services:
   app:
-    #image: demoapp
+    # image: demoapp
     build: .
     environment:
       MONGO_URL: "mongodb://db:27017/test"
     depends_on:
       - db
     ports:
-      - "3000:3000"
+      - "3000-3010:3000"
     volumes:
       # Bindea a esta ruta
-      - .://usr/src
+      - .:/usr/src
       # Si no tiene 2 puntos no sobreescribe nada
-      - //usr/src/node_modules
+      - /usr/src/node_modules
 
   db:
     image: mongo

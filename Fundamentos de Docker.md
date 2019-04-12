@@ -190,11 +190,23 @@ Para crear los servicios con *Docker Compose*, usar el comando:
 
 Para detener los servicios en ejecución:
 
-***docker-compose down,*** esto detendra los servicios ejecutados.
+***docker-compose stop*** detiene los contenedos en ejecución.
+
+***docker-compose down,*** esto detiene y elimina los contenedores de los servicios ejecutados.
+
+***docker-compose logs \<nombre-servicio\>*** muestra el log de un servicio especifico.
+
+***docker-compose logs -f \<nombre-servicio\>*** muestra y mantiene la traza del log de un servicio especifico.
 
 Tambien podemos acceder a un contenedor con:
 
-***docker-compose exec \<nombre-servicio\> \<bash ó alguna ejecución\>*** 
+***docker-compose exec \<nombre-servicio\> \<bash ó alguna ejecución\>***
+
+
+
+
+
+
 
 ##### Comandos Útiles
 
@@ -216,4 +228,3 @@ Tambien podemos acceder a un contenedor con:
 + ***docker volume ls*** = lista los volúmenes existentes.
 + ***docker volume rm "nombre-de-volumen"*** = Elimina un volumen específico.
 + ***docker run -d  -p 8080:80 nginx*** = El flag **-p** vincula un puerto del contenedor a un puerto local en la forma *<puerto_local>:<puerto_contenedor>*.
-+ 
